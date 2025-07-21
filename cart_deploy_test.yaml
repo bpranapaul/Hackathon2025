@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-model-test
+  labels:
+    app: cart-model-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart-model-test
+  template:
+    metadata:
+      labels:
+        app: cart-model-test
+    spec:
+      containers:
+      - name: cart-container
+        image: buildreg.azurecr.io/nhaldar1/cart-test-model:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: cart-storage
+          mountPath: /app/data  # Change this path as needed
+      volumes:
+      - name: cart-storage
+        persistentVolumeClaim:
+          claimName: cart-model-pvc          
